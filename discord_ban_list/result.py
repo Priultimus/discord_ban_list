@@ -1,28 +1,54 @@
+"""
+Data classes for DBans
+"""
 from abc import ABC, abstractproperty, abstractmethod
 from typing import Union, Optional
 
 
 class BanABC(ABC):
+    """
+    Base class for bans. Don't use this. Use :class:`Ban` or :class:`NoBan`.
+    """
     __slots__ = ()
 
     @abstractproperty
     def user_id(self) -> int:
+        """
+
+        :return: user id
+        """
         pass
 
     @abstractproperty
     def banned(self) -> bool:
+        """
+
+        :return: whether the user is banned or not
+        """
         pass
 
     @abstractproperty
     def reason(self) -> Optional[str]:
+        """
+
+        :return: the ban reason or none if not banned
+        """
         pass
 
     @abstractproperty
     def case_id(self) -> Optional[int]:
+        """
+
+        :return: the case id or none if not banned
+        """
         pass
 
     @abstractproperty
     def proof(self) -> Optional[str]:
+        """
+
+        :return: the proof or none if not banned
+        """
         pass
 
     @abstractmethod
@@ -31,6 +57,9 @@ class BanABC(ABC):
 
 
 class Ban(BanABC):
+    """
+    Represents a DBan entry of a *banned* user.
+    """
     __slots__ = ('_proof', '_user_id', '_case_id', '_reason')
 
     def __init__(self, user_id: Union[int, str], reason: str, case_id: Union[str, int], proof: str):
@@ -60,12 +89,13 @@ class Ban(BanABC):
         return self._proof
 
     def __str__(self):
-        return '<DBan banned: True, User: {user}, Case: {case}, reason: {reason!r}, proof: {proof!r}>'.format(
-            user=self.user_id,
-            case=self.case_id,
-            reason=self.reason,
-            proof=self.proof,
-        )
+        return '<DBan banned: True, User: {user}, Case: {case}, ' \
+               'reason: {reason!r}, proof: {proof!r}>'.format \
+            (user=self.user_id,
+             case=self.case_id,
+             reason=self.reason,
+             proof=self.proof,
+            )
 
     def __eq__(self, other):
         if not isinstance(other, Ban):
@@ -75,6 +105,9 @@ class Ban(BanABC):
 
 
 class NoBan(BanABC):
+    """
+    Represents a DBan entry of a *safe* user.
+    """
     __slots__ = ('_user_id',)
 
     def __init__(self, user_id: Union[str, int]):

@@ -20,8 +20,8 @@ async def a_test_banned():
     assert ban.banned
     assert ban.user_id == user
     assert ban.case_id == 9999
-    assert ban.reason == "THIS IS A VIRTUAL DBANS API TESTING ACCOUNT"
-    assert ban.proof == "https://yourmom-is.gae"
+    assert ban.reason
+    assert ban.proof
 
 
 class TestSomething(TestCase):

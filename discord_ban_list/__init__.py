@@ -1,9 +1,13 @@
+"""
+Module for looking up entries/users on the bans.discord.id
+"""
+
 from .api import DiscordBanList
 from .result import BanABC, NoBan, Ban
-from .version import VersionInfo, version
+from .version import VersionInfo, VERSION
 
 __all__ = (
-    'VersionInfo', 'version',
+    'VersionInfo', 'VERSION',
     'DiscordBanList',
     'BanABC', 'Ban', 'NoBan',
 )

@@ -28,4 +28,4 @@ class VersionInfo:
         return str(self)
 
 
-version = VersionInfo(1, 0, 0, 'a', 0)
+VERSION = VersionInfo(1, 0, 0, 'a', 0)

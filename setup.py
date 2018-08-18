@@ -3,7 +3,7 @@ from setuptools import setup
 with open('discord_ban_list/version.py') as fp:
     _loc, _glob = {}, {}
     exec(fp.read(), _loc, _glob)
-    version = {**_loc, **_glob}['version']
+    version = {**_loc, **_glob}['VERSION']
 
 with open('requirements.txt') as fp:
     requirements = fp.read().splitlines()
