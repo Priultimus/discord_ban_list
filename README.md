@@ -1,10 +1,10 @@
 # Discord Ban List wrapper for python
 
-Non-official wrapper for [Discord bans][dbans].
+Non-official wrapper for [Discord Bans][dbans].
 
 ## Installation
 
-just `pip` install `https://github.com/romangraef/discord_ban_list/archive/master.zip`
+just `pip install https://github.com/romangraef/discord_ban_list/archive/master.zip`
 
 ## Usage
 
