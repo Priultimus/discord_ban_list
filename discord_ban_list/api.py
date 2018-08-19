@@ -3,11 +3,12 @@ Central API module. Most action taskes place here
 """
 
 from asyncio import Lock
-from typing import Union
+from typing import Union, List
 
 from aiohttp import ClientSession
 
-from .result import Ban, NoBan, BanABC
+from .exceptions import TooManyUsers
+from .result import BanABC
 
 CHECK_URL = 'https://bans.discord.id/api/check.php'
 
@@ -36,17 +37,21 @@ class DiscordBanList(object):
         """
         await self._guarantee_client()
 
-    async def check(self, user_id: Union[int, str]) -> BanABC:
+    async def check(self, *user_ids: Union[int, str]) -> List[BanABC]:
         """
-        Check if a user is banned on DBans
+        Check if some users are banned on DBans
 
-        :param user_id: id of the user to be checked
-        :return: a :class:`BanABC`
+        :param user_ids: ids of the users to be checked
+        :return: a list of :class:`BanABC`
         """
-        resp = await self._get('{base}?user_id={user_id}'.format(base=CHECK_URL, user_id=user_id))
-        if resp['banned'] == "0":
-            return NoBan(user_id)
-        return Ban(user_id, resp['reason'], resp['case_id'], resp['proof'])
+        user_ids = list(set(user_ids))
+        if len(user_ids) < 1:
+            return []
+        if len(user_ids) > 99:
+            raise TooManyUsers(len(user_ids))
+        resp = await self._get(CHECK_URL + '?' + '&'.join('user_id=' +
+                                                          str(user_id) for user_id in user_ids))
+        return [BanABC.parse(ban) for ban in resp]
 
     async def _get(self, url):
         async with self._client.get(url,

@@ -11,6 +11,18 @@ class BanABC(ABC):
     """
     __slots__ = ()
 
+    @staticmethod
+    def parse(obj: dict) -> 'BanABC':
+        """
+        Parse a response from DBans into an apropiate :class:`BanABC` subclass object.
+
+        :param obj: json response to be parsed
+        :return: the parsed ban
+        """
+        if obj['banned'] == "0":
+            return NoBan(obj['user_id'])
+        return Ban(obj['user_id'], obj['reason'], obj['case_id'], obj['proof'])
+
     @abstractproperty
     def user_id(self) -> int:
         """
